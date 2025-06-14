@@ -1,0 +1,25 @@
+steps:
+  # Build Docker image
+  - name: 'gcr.io/cloud-builders/docker'
+    args: ['build', '-t', 'gcr.io/prak-g-kelompok12/fullstack-backend:latest', '.']
+  
+  # Push to Container Registry
+  - name: 'gcr.io/cloud-builders/docker'
+    args: ['push', 'gcr.io/prak-g-kelompok12/fullstack-backend:latest']
+  
+  # Deploy to Cloud Run
+  - name: 'gcr.io/cloud-builders/gcloud'
+    args:
+      - 'run'
+      - 'deploy'
+      - 'fullstack-backend'
+      - '--image=gcr.io/prak-g-kelompok12/fullstack-backend:latest'
+      - '--region=us-central1'
+      - '--platform=managed'
+      - '--allow-unauthenticated'
+      - '--port=8080'
+      - '--add-cloudsql-instances=prak-g-kelompok12:us-central1:fullstack-ecommerce-db'
+      - '--set-env-vars=NODE_ENV=production,DB_NAME=fullstack_ecommerce,DB_USER=appuser,DB_PASSWORD=AppUser123Pass,JWT_SECRET=Kelompok12SuperSecretJWTKey2025'
+
+options:
+  logging: CLOUD_LOGGING_ONLY
