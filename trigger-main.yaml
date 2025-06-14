@@ -1,0 +1,9 @@
+﻿name: backend-trigger-main
+description: CI/CD for main repository
+github:
+  owner: gustansyah
+  name: projek-akhir-praktcc-gustansyah
+  push:
+    branch: ^main$
+filename: backend/cloudbuild.yaml
+serviceAccount: projects/kelompok12-ecommerce-new/serviceAccounts/870672317435-compute@developer.gserviceaccount.com
