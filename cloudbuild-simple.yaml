@@ -1,0 +1,24 @@
+steps:
+  # Build Docker image
+  - name: 'gcr.io/cloud-builders/docker'
+    args: ['build', '-t', 'gcr.io/prak-g-kelompok12/fullstack-backend:latest', '.']
+  
+  # Push to Container Registry
+  - name: 'gcr.io/cloud-builders/docker'
+    args: ['push', 'gcr.io/prak-g-kelompok12/fullstack-backend:latest']
+  
+  # Deploy to Cloud Run (removed PORT from env vars)
+  - name: 'gcr.io/cloud-builders/gcloud'
+    args:
+      - 'run'
+      - 'deploy'
+      - 'fullstack-backend'
+      - '--image=gcr.io/prak-g-kelompok12/fullstack-backend:latest'
+      - '--region=us-central1'
+      - '--platform=managed'
+      - '--allow-unauthenticated'
+      - '--port=8080'
+      - '--set-env-vars=NODE_ENV=production'
+
+options:
+  logging: CLOUD_LOGGING_ONLY
